@@ -52,7 +52,9 @@ app.use((req,res,next)=>{
 
 app.set("views",path.join(__dirname,"/views"));
 app.use(express.urlencoded({ extended: true }));
-
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
 
 app.get("/login",(req,res)=>{
     res.render("loginPage.ejs");
