@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Idea Page</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .idea-form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    .form-label {
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="idea-form">
+    <h2 class="mb-4 text-center">Submit Your Idea</h2>
+    <form method="post" action="/new">
+      <div class="mb-3">
+        <label for="ideaTitle" class="form-label">Idea Title</label>
+        <input type="text" class="form-control" id="ideaTitle" placeholder="Enter a short title" name="title">
+      </div>
+      <div class="mb-3">
+        <label for="ideaTextarea" class="form-label">Your Idea</label>
+        <textarea class="form-control" id="ideaTextarea" rows="6" placeholder="Describe your idea here..." name="idea"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Submit Idea</button>
+    </form>
+  </div>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

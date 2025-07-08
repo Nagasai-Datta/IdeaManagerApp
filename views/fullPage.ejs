@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Full Idea View</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #34495e;
+    }
+    .idea-container {
+      width: 90vw;
+      min-height: 100vh;
+      padding: 3rem 2rem;
+      background: #fff;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      overflow-y: auto;
+    }
+    .idea-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #2b5876;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    .idea-content {
+      font-size: 1.5rem;
+      line-height: 1.8;
+      white-space: pre-line;
+      flex-grow: 1;
+    }
+    .related-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 2px solid #e3e6f0;
+      margin-bottom: 1.5rem;
+      object-fit: contain;
+      display: block;
+    }
+    .custom-btn1 {
+      background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 2.2rem;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(91,134,229,0.08);
+      transition: background 0.2s, color 0.2s;
+      align-self: flex-start;
+      margin-right: 15px;
+    }
+    .custom-btn1:hover, .custom-btn:focus {
+      background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%);
+      color: #fff;
+    }
+    .custom-btn2 {
+      background: linear-gradient(90deg, #e33636 100%, #f9856b 0%);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 2.2rem;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(91,134,229,0.08);
+      transition: background 0.2s, color 0.2s;
+      align-self: flex-start;
+      margin-right: 15px;
+    }
+    .custom-btn2:hover, .custom-btn:focus {
+      background: linear-gradient(90deg, #f9856b 0%, #d13636 100%);
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .idea-container {
+        width: 100vw;
+        padding: 2rem 0.5rem;
+      }
+      .idea-title {
+        font-size: 2rem;
+      }
+      .idea-content {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/new">New Idea</a>
+          </li>
+        </ul>
+        <form class="d-flex" action="/login" method="get">
+          <button class="btn btn-outline-danger" type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="idea-container">
+    <div class="idea-title"><%= title %></div>
+    <div class="idea-content"><%= idea %></div>
+    <h5 class="mb-3" style="color:#5b86e5;">Related images</h5>
+    <!-- Example images, add as many as needed, each will stack vertically -->
+    <img src="img1.jpg" alt="Image 1" class="related-img">
+    <img src="/assets/img2.jpg" alt="Image 2" class="related-img">
+    <!-- Add more images here as needed -->
+     
+    <form method="get" action="/idea/<%=id%>/edit">
+      <button class="custom-btn1 mt-2" >Edit</button>
+    </form>
+    <form method="post" action="/idea/<%= id %>?_method=DELETE">
+      <button class="custom-btn2 mt-2" type="submit">Delete</button>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
