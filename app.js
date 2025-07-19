@@ -10,12 +10,12 @@ const LocalStrategy = require("passport-local").Strategy;
 const flash = require("connect-flash");
 const methodOverride = require('method-override');
 const MongoStore = require("connect-mongo");
+const multer = require('multer');
+const { storage } = require('./cloudinary');
+const upload = multer({ storage });
+const { cloudinary } = require('./cloudinary');
 
-const mainConnection = mongoose.createConnection(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
+const mainConnection = mongoose.createConnection(process.env.MONGO_URL);
 const userSchema = require("./user.js");
 const ideaSchema = require("./idea.js");
 
@@ -118,7 +118,7 @@ app.get("/idea/:id", async (req, res) => {
     if (!ideaDoc) {
         return res.status(404).send("Idea not found");
     }
-    res.render("fullPage", { id,title: ideaDoc.title, idea: ideaDoc.idea});
+    res.render("fullPage", { id,title: ideaDoc.title, idea: ideaDoc.idea, images:ideaDoc.images});
 });
 app.get("/idea/:id/edit",async(req,res)=>{
     const { id } = req.params;
@@ -146,6 +146,45 @@ app.delete("/idea/:id", async (req, res) => {
     const { id } = req.params;
     await Idea.findByIdAndDelete(id);
     res.redirect("/home");
+});
+
+// Image upload route
+app.post("/upload/:id", upload.array('images', 3), async (req, res) => {
+    const { id } = req.params;
+    const idea = await Idea.findById(id);
+    if (!idea) {
+        return res.status(404).send("Idea not found");
+    }
+
+    const imageUrls = req.files.map(file => file.path);
+    if (!idea.images) idea.images = [];
+    idea.images.push(...imageUrls);
+    await idea.save();
+
+    res.redirect(`/idea/${id}`);
+});
+app.post("/idea/:id/image-delete", async (req, res) => {
+  const { id } = req.params;
+  const { imageUrl } = req.body;
+
+  // Extract public_id from image URL
+  const publicId = imageUrl.split('/').slice(-1)[0].split('.')[0];
+  const fullPublicId = `idea_images/${publicId}`; // folder + filename
+
+  try {
+    // 1. Delete from Cloudinary
+    await cloudinary.uploader.destroy(fullPublicId);
+
+    // 2. Remove from MongoDB
+    const idea = await Idea.findById(id);
+    idea.images = idea.images.filter(img => img !== imageUrl);
+    await idea.save();
+
+    res.redirect(`/idea/${id}`);
+  } catch (err) {
+    console.error("Error deleting image:", err);
+    res.status(500).send("Failed to delete image");
+  }
 });
 app.listen(3000,()=>{
     console.log("server is running fine!");

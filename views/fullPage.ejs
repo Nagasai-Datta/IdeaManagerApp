@@ -122,17 +122,32 @@
     <div class="idea-title"><%= title %></div>
     <div class="idea-content"><%= idea %></div>
     <h5 class="mb-3" style="color:#5b86e5;">Related images</h5>
-    <!-- Example images, add as many as needed, each will stack vertically -->
-    <img src="img1.jpg" alt="Image 1" class="related-img">
-    <img src="/assets/img2.jpg" alt="Image 2" class="related-img">
-    <!-- Add more images here as needed -->
-     
+    <% if (images && images.length > 0) { %>
+  <% images.forEach(img => { %>
+    <div style="margin-bottom: 15px;">
+      <img src="<%= img %>" alt="Related Image" class="related-img">
+      <form action="/idea/<%= id %>/image-delete" method="POST" style="display:inline;">
+        <input type="hidden" name="imageUrl" value="<%= img %>">
+        <button type="submit" class="btn btn-danger btn-sm mt-2">Delete Image</button>
+      </form>
+    </div>
+  <% }) %>
+<% } else { %>
+  <p>No related images uploaded yet.</p>
+<% } %>
+
     <form method="get" action="/idea/<%=id%>/edit">
       <button class="custom-btn1 mt-2" >Edit</button>
     </form>
     <form method="post" action="/idea/<%= id %>?_method=DELETE">
       <button class="custom-btn2 mt-2" type="submit">Delete</button>
     </form>
+    <form action="/upload/<%= id %>" method="POST" enctype="multipart/form-data" class="mt-4">
+      <label for="images" class="form-label" style="font-weight: 600;">Upload Related Images (up to 3):</label>
+      <input type="file" name="images" id="images" accept="image/*" multiple class="form-control mb-3" required>
+      <button type="submit" class="custom-btn1">Upload Images</button>
+    </form>
+
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
